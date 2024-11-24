@@ -1,8 +1,9 @@
-from flask import Flask, render_template, Response, jsonify
+from flask import Flask, render_template, Response, request, jsonify
 import cv2
 import mediapipe as mp
 import numpy as np
 import joblib
+import base64
 
 app = Flask(__name__)
 
@@ -64,41 +65,34 @@ def extract_features(landmarks):
 def index():
     return render_template('index.html')
 
-def generate_frames():
-    cap = cv2.VideoCapture(0)
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            break
+@app.route('/process_frame', methods=['POST'])
+def process_frame():
+    try:
+        # Obtener el frame enviado desde el cliente
+        data = request.json['frame']
+        img_data = base64.b64decode(data.split(',')[1])
+        np_img = np.frombuffer(img_data, np.uint8)
+        frame = cv2.imdecode(np_img, cv2.IMREAD_COLOR)
 
+        # Procesar el frame con MediaPipe
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         results = pose.process(rgb_frame)
 
         if results.pose_landmarks:
             landmarks = results.pose_landmarks.landmark
-            mp.solutions.drawing_utils.draw_landmarks(frame, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
             features = extract_features(landmarks)
             if len(features) == scaler.n_features_in_:
                 scaled_features = scaler.transform([features])
                 reduced_features = pca.transform(scaled_features)
                 predicted_label = model.predict(reduced_features)[0]
                 activity = label_encoder.inverse_transform([predicted_label])[0]
-                cv2.putText(frame, f'Actividad: {activity}', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                return jsonify({'activity': activity})
 
-        _, buffer = cv2.imencode('.jpg', frame)
-        frame = buffer.tobytes()
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        return jsonify({'activity': 'No se detectó actividad'})
 
-    cap.release()
-
-@app.route('/video_feed')
-def video_feed():
-    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-@app.route('/activity', methods=['GET'])
-def get_activity():
-    return jsonify({"message": "Endpoint not yet implemented."})
+    except Exception as e:
+        print(f"Error procesando frame: {e}")
+        return jsonify({'error': 'Error procesando el frame'})
 
 if __name__ == "__main__":
     app.run(debug=True)
