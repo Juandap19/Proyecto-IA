@@ -1,0 +1,11 @@
+Entrega1/
+Entrega2/
+Entrega3/ArchivoColab/
+*.mp4
+*.avi
+*.mkv
+*.mov
+*.log
+__pycache__/
+*.pyc
+.DS_Store

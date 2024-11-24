@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detección de Actividades</title>
+    <!-- Import TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Habilitar modo oscuro de forma predeterminada */
+        html {
+            color-scheme: dark;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-300 min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-gray-800 text-gray-100 py-6 shadow-md">
+        <div class="container mx-auto text-center">
+            <h1 class="text-3xl font-bold">Detección de Actividades en Tiempo Real</h1>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center py-10">
+        <div class="bg-gray-800 rounded-lg shadow-lg p-8 max-w-4xl w-full text-center">
+            <h2 class="text-2xl font-semibold text-green-400 mb-4">Stream en Vivo</h2>
+            <div class="border border-gray-700 rounded-lg overflow-hidden">
+                <img src="/video_feed" alt="Video Stream" class="w-full">
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400 py-4">
+        <div class="container mx-auto text-center">
+            <p class="text-sm">&copy; 2024 Detección de Actividades. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>
