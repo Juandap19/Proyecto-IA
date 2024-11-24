@@ -1,6 +1,7 @@
 const video = document.getElementById('video');
 const canvas = document.createElement('canvas');
 const serverURL = '/process_frame';
+const activityDisplay = document.getElementById('activity-display'); // Elemento para mostrar actividad
 
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({ video: true })
@@ -39,8 +40,16 @@ async function sendFrameToServer(video) {
         });
 
         const data = await response.json();
-        console.log('Actividad detectada:', data.activity);
+
+        // Actualizar el elemento con la actividad detectada
+        if (data.activity) {
+            activityDisplay.textContent = `Actividad detectada: ${data.activity}`;
+        } else {
+            activityDisplay.textContent = "No se detectó actividad.";
+        }
+
     } catch (error) {
         console.error('Error enviando el frame:', error);
+        activityDisplay.textContent = "Error al detectar actividad.";
     }
 }
