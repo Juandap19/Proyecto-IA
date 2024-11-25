@@ -18,8 +18,19 @@ Este proyecto utiliza técnicas avanzadas de visión por computadora y aprendiza
 - **Scikit-learn**: Para preprocesamiento y clasificación.
 
 ## Requisitos
-Para ejecutar este proyecto, necesitas instalar las siguientes dependencias que se encuentran en la carpeta `ENTREGA 3`:
+Para ejecutar este proyecto localmente, necesitas instalar las siguientes dependencias que se encuentran en la raiz del proyecto:
 
 ```bash
  pip install -r requirements.txt
  ```
+
+Una vez instalado todo las dependencias, necesitamos ejecutar el archivo `prueba.py`:
+
+```bash
+ python Entrega3/prueba.py
+ ```
+
+# Hipervinculos
+
+- Link del video explicativo: https://youtu.be/CGYH03rcdSk
+- Link pagina desplegada: https://proyecto-ia-production.up.railway.app
